@@ -1,0 +1,35 @@
+<script>
+let time = 30;
+const total = 30;
+
+const timer = document.getElementById("timer");
+const btn = document.getElementById("startBtn");
+const bar = document.getElementById("progressBar");
+
+const startSound = document.getElementById("startSound");
+const midSound = document.getElementById("midSound");
+const endSound = document.getElementById("endSound");
+
+btn.onclick = () => {
+    btn.style.display = "none";
+    startSound.play();
+
+    const interval = setInterval(() => {
+        time--;
+        timer.textContent = time;
+
+        timer.classList.add("pulse");
+        setTimeout(() => timer.classList.remove("pulse"), 200);
+
+        let progress = ((total - time) / total) * 100;
+        bar.style.width = progress + "%";
+
+        if (time === 15) midSound.play();
+        if (time <= 0) {
+            clearInterval(interval);
+            timer.textContent = ""; // GO retiré
+            endSound.play();
+        }
+    }, 1000);
+};
+</script>
