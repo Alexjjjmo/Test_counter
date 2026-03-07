@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -108,6 +107,7 @@ body {
 <div id="progressBar"></div>
 </div>
 
+<!-- Sons WAV locaux -->
 <audio id="startSound" src="start.wav"></audio>
 <audio id="midSound" src="mid.wav"></audio>
 <audio id="endSound" src="end.wav"></audio>
@@ -133,31 +133,12 @@ const midSound = document.getElementById("midSound");
 const endSound = document.getElementById("endSound");
 
 
-/* PLEIN ECRAN */
-
-function openFullscreen() {
-
-    let elem = document.documentElement;
-
-    if (elem.requestFullscreen) {
-        elem.requestFullscreen();
-    } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen();
-    } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen();
-    }
-
-}
-
-
 /* START */
 
 btn.onclick = () => {
 
     btn.style.display = "none";
     controls.style.display = "flex";
-
-    openFullscreen();
 
     startSound.play();
 
@@ -200,6 +181,7 @@ function runTimer() {
 pauseBtn.onclick = () => {
 
     paused = !paused;
+
     pauseBtn.textContent = paused ? "RESUME" : "PAUSE";
 
 };
@@ -228,4 +210,3 @@ stopBtn.onclick = () => {
 
 </body>
 </html>
-```
