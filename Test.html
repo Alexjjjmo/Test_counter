@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -133,5 +132,113 @@ body{
 
 <!-- Sons -->
 
-<audio id="startSound" src="start.wav"></audi
-```
+<audio id="startSound" src="start.wav"></audio>
+<audio id="midSound" src="mid.wav"></audio>
+<audio id="endSound" src="end.wav"></audio>
+
+
+<script>
+
+/* ---------- VARIABLES ---------- */
+
+let time = 30
+const total = 30
+
+let interval
+let paused = false
+
+const timer = document.getElementById("timer")
+const startBtn = document.getElementById("startBtn")
+const bar = document.getElementById("progressBar")
+
+const pauseBtn = document.getElementById("pauseBtn")
+const stopBtn = document.getElementById("stopBtn")
+const controls = document.getElementById("controls")
+
+const startSound = document.getElementById("startSound")
+const midSound = document.getElementById("midSound")
+const endSound = document.getElementById("endSound")
+
+
+/* ---------- START ---------- */
+
+startBtn.onclick = () => {
+
+    startBtn.style.display="none"
+    controls.style.display="flex"
+
+    timer.style.color="#993399"
+
+    startSound.play()
+
+    interval = setInterval(runTimer,1000)
+}
+
+
+/* ---------- TIMER ---------- */
+
+function runTimer(){
+
+    if(paused) return
+
+    time--
+
+    timer.textContent=time
+
+    timer.classList.add("pulse")
+    setTimeout(()=>timer.classList.remove("pulse"),200)
+
+    let progress = ((total-time)/total)*100
+    bar.style.width = progress+"%"
+
+    if(time===15) midSound.play()
+
+    if(time<=0){
+
+        clearInterval(interval)
+
+        timer.textContent="0"
+        timer.style.color="#f44336"
+
+        bar.style.width="100%"
+
+        endSound.play()
+    }
+}
+
+
+/* ---------- PAUSE ---------- */
+
+pauseBtn.onclick=()=>{
+
+    paused=!paused
+
+    pauseBtn.textContent = paused ? "RESUME" : "PAUSE"
+}
+
+
+/* ---------- STOP ---------- */
+
+stopBtn.onclick=()=>{
+
+    clearInterval(interval)
+
+    time = total
+    paused = false
+
+    timer.textContent=total
+    timer.style.color="#993399"
+
+    bar.style.width="0%"
+
+    pauseBtn.textContent="PAUSE"
+
+    controls.style.display="none"
+    startBtn.style.display="block"
+}
+
+</script>
+
+</body>
+</html>
+
