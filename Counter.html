@@ -20,27 +20,18 @@ align-items:center;
 background:white;
 color:#993399;
 
-font-family:Arial, Helvetica, sans-serif;
+font-family:monospace;
 
 overflow:hidden;
 }
 
-/* CHIFFRES */
+/* CHIFFRES MAX */
 
 #timer{
-
-font-size:70vh;      /* taille stable */
+font-size:100vw;
 font-weight:900;
-
-font-family:monospace;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-text-align:center;
+line-height:1;
 user-select:none;
-
 }
 
 </style>
@@ -71,9 +62,7 @@ const midSound = document.getElementById("midSound")
 const endSound = document.getElementById("endSound")
 
 function updateDisplay(){
-
-timer.textContent = String(time).padStart(2," ")
-
+timer.textContent = String(time).padStart(2,"0")
 }
 
 function runTimer(){
