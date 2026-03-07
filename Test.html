@@ -24,7 +24,6 @@ position:relative;
 /* TIMER */
 
 #timer{
-font-size:45vmin;
 font-weight:900;
 z-index:5;
 position:relative;
@@ -163,6 +162,31 @@ let targetX=200
 let targetY=200
 let anim=null
 
+/* TAILLE MAX DU TIMER */
+
+function resizeTimer(){
+
+let maxWidth = window.innerWidth * 0.9
+let maxHeight = window.innerHeight * 0.8
+
+let size = 10
+
+timer.style.fontSize = size+"px"
+
+while(
+timer.offsetWidth < maxWidth &&
+timer.offsetHeight < maxHeight
+){
+size += 5
+timer.style.fontSize = size+"px"
+}
+
+timer.style.fontSize = (size-5)+"px"
+
+}
+
+window.addEventListener("resize",resizeTimer)
+
 /* SON */
 
 function playSound(sound){
@@ -277,6 +301,7 @@ if(paused) return
 time--
 
 timer.textContent=time
+resizeTimer()
 
 let progress=((total-time)/total)*100
 bar.style.width=progress+"%"
@@ -318,6 +343,7 @@ bar.style.width="0%"
 
 playSound(startSound)
 
+resizeTimer()
 startLion()
 
 interval=setInterval(runTimer,1000)
@@ -342,6 +368,8 @@ bar.style.width="0%"
 
 lion.style.display="none"
 bubble.style.display="none"
+
+resizeTimer()
 
 }
 
@@ -369,6 +397,8 @@ lion.classList.toggle("paused")
 }
 
 })
+
+resizeTimer()
 
 </script>
 
