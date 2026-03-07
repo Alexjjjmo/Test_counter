@@ -6,128 +6,118 @@
 <title>HIIT Timer</title>
 
 <style>
+
 body{
-  margin:0;
-  background:white;
-  color:#993399;
-  font-family:Arial, Helvetica, sans-serif;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  overflow:hidden;
-  position:relative;
+margin:0;
+background:white;
+color:#993399;
+font-family:Arial, Helvetica, sans-serif;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+height:100vh;
+overflow:hidden;
+position:relative;
 }
 
 /* TIMER */
 
 #timer{
-  font-size:22vw;
-  font-weight:900;
-  transition:transform .25s;
-  z-index:5;
-  position:relative;
-}
-
-.pulse{
-  transform:scale(1.15);
+font-size:22vw;
+font-weight:900;
+z-index:5;
+position:relative;
 }
 
 /* PROGRESS BAR */
 
 #progressContainer{
-  position:absolute;
-  bottom:0;
-  width:100%;
-  height:25px;
-  background:#eee;
-  z-index:10;
+position:absolute;
+bottom:0;
+width:100%;
+height:25px;
+background:#eee;
+z-index:10;
 }
 
 #progressBar{
-  height:100%;
-  width:0%;
-  background:#00c853;
-  transition:width 1s linear;
+height:100%;
+width:0%;
+background:#00c853;
+transition:width 1s linear;
 }
 
 /* LION */
 
 #lion{
-  position:absolute;
-  width:150px;
-  height:150px;
-  background:url("lion.png") no-repeat center center;
-  background-size:contain;
-  display:none;
-  pointer-events:none;
-  z-index:3;
-  transform-origin:center center;
-  filter:drop-shadow(0 8px 10px rgba(0,0,0,.12));
+position:absolute;
+width:150px;
+height:150px;
+background:url("lion.png") no-repeat center;
+background-size:contain;
+display:none;
+pointer-events:none;
+z-index:3;
+transform-origin:center;
 }
 
-/* Animation de roulage */
+/* animation patinage */
+
 #lion.skating{
-  animation:lionBounce .35s infinite alternate ease-in-out;
+animation:lionBounce .35s infinite alternate ease-in-out;
 }
 
 @keyframes lionBounce{
-  from{ margin-top:0; }
-  to{ margin-top:-6px; }
+from{margin-top:0}
+to{margin-top:-6px}
 }
 
-/* Pause */
 #lion.paused{
-  animation-play-state:paused;
+animation-play-state:paused;
 }
 
-/* Pose finale étoile de mer */
+/* pose finale */
+
 #lion.star{
-  animation:none !important;
-  transform:rotate(0deg) scale(1.08) !important;
+animation:none;
+transform:scale(1.1);
 }
 
 /* BULLE */
 
 #bubble{
-  position:absolute;
-  background:white;
-  border:3px solid #993399;
-  border-radius:18px;
-  padding:10px 14px;
-  font-weight:700;
-  font-size:20px;
-  display:none;
-  z-index:20;
-  white-space:nowrap;
-  box-shadow:0 6px 12px rgba(0,0,0,.08);
+position:absolute;
+background:white;
+border:3px solid #993399;
+border-radius:18px;
+padding:10px 14px;
+font-weight:bold;
+font-size:20px;
+display:none;
+z-index:20;
 }
 
 #bubble:after{
-  content:"";
-  position:absolute;
-  left:20px;
-  bottom:-14px;
-  width:0;
-  height:0;
-  border-left:10px solid transparent;
-  border-right:10px solid transparent;
-  border-top:14px solid #993399;
+content:"";
+position:absolute;
+left:20px;
+bottom:-14px;
+border-left:10px solid transparent;
+border-right:10px solid transparent;
+border-top:14px solid #993399;
 }
 
 #bubble:before{
-  content:"";
-  position:absolute;
-  left:22px;
-  bottom:-10px;
-  width:0;
-  height:0;
-  border-left:8px solid transparent;
-  border-right:8px solid transparent;
-  border-top:12px solid white;
-  z-index:1;
+content:"";
+position:absolute;
+left:22px;
+bottom:-10px;
+border-left:8px solid transparent;
+border-right:8px solid transparent;
+border-top:12px solid white;
 }
+
 </style>
 </head>
 <body>
@@ -138,7 +128,7 @@ body{
 <div id="bubble">Bonne année !</div>
 
 <div id="progressContainer">
-  <div id="progressBar"></div>
+<div id="progressBar"></div>
 </div>
 
 <audio id="startSound" src="start.wav"></audio>
@@ -146,396 +136,239 @@ body{
 <audio id="endSound" src="end.wav"></audio>
 
 <script>
+
 /* VARIABLES */
 
 let time = 30
 const total = 30
 
-let interval = null
-let paused = false
-let running = false
+let interval=null
+let paused=false
+let running=false
 
-const timer = document.getElementById("timer")
-const bar = document.getElementById("progressBar")
+const timer=document.getElementById("timer")
+const bar=document.getElementById("progressBar")
 
-const startSound = document.getElementById("startSound")
-const midSound = document.getElementById("midSound")
-const endSound = document.getElementById("endSound")
+const startSound=document.getElementById("startSound")
+const midSound=document.getElementById("midSound")
+const endSound=document.getElementById("endSound")
 
-const lion = document.getElementById("lion")
-const bubble = document.getElementById("bubble")
+const lion=document.getElementById("lion")
+const bubble=document.getElementById("bubble")
 
-let lionX = 80
-let lionY = 120
-let targetX = 200
-let targetY = 180
-let lionAnim = null
+let x=200
+let y=200
+let targetX=200
+let targetY=200
+let anim=null
 
-const LION_W = 150
-const LION_H = 150
+/* SON */
 
-/* AUDIO */
-
-function playSound(audioEl){
-  if(!audioEl) return
-  audioEl.currentTime = 0
-  audioEl.play().catch(() => {})
+function playSound(sound){
+sound.currentTime=0
+sound.play().catch(()=>{})
 }
 
-/* ZONE DU TIMER A EVITER */
+/* ZONE TIMER */
 
-function getTimerSafeZone(){
-  const rect = timer.getBoundingClientRect()
-  const margin = 60
+function getTimerZone(){
 
-  return {
-    left: rect.left - margin,
-    right: rect.right + margin,
-    top: rect.top - margin,
-    bottom: rect.bottom + margin
-  }
+const rect=timer.getBoundingClientRect()
+const margin=60
+
+return{
+left:rect.left-margin,
+right:rect.right+margin,
+top:rect.top-margin,
+bottom:rect.bottom+margin
 }
 
-function rectIntersectsSafeZone(x, y, w, h){
-  const zone = getTimerSafeZone()
-
-  return !(
-    x + w < zone.left ||
-    x > zone.right ||
-    y + h < zone.top ||
-    y > zone.bottom
-  )
 }
 
-/* POSITIONNEMENT */
+function inZone(px,py){
 
-function clampLionPosition(width = LION_W, height = LION_H){
-  const maxX = window.innerWidth - width
-  const maxY = window.innerHeight - height - 25
+const z=getTimerZone()
 
-  if(lionX < 0) lionX = 0
-  if(lionY < 0) lionY = 0
-  if(lionX > maxX) lionX = maxX
-  if(lionY > maxY) lionY = maxY
+return px>z.left && px<z.right && py>z.top && py<z.bottom
+
 }
+
+/* CIBLE */
 
 function newTarget(){
-  const maxX = window.innerWidth - LION_W
-  const maxY = window.innerHeight - LION_H - 25
 
-  let tries = 0
+do{
 
-  do{
-    targetX = Math.random() * Math.max(20, maxX - 20)
-    targetY = Math.random() * Math.max(20, maxY - 20)
-    tries++
-  }while(rectIntersectsSafeZone(targetX, targetY, LION_W, LION_H) && tries < 250)
+targetX=Math.random()*(window.innerWidth-150)
+targetY=Math.random()*(window.innerHeight-150)
+
+}while(inZone(targetX,targetY))
+
 }
 
-function pushLionOutOfTimerZone(){
-  if(!rectIntersectsSafeZone(lionX, lionY, LION_W, LION_H)) return
-
-  const zone = getTimerSafeZone()
-
-  const lionCenterX = lionX + LION_W / 2
-  const lionCenterY = lionY + LION_H / 2
-  const zoneCenterX = (zone.left + zone.right) / 2
-  const zoneCenterY = (zone.top + zone.bottom) / 2
-
-  let dx = lionCenterX - zoneCenterX
-  let dy = lionCenterY - zoneCenterY
-
-  if(dx === 0 && dy === 0){
-    dx = 1
-    dy = 1
-  }
-
-  const length = Math.sqrt(dx * dx + dy * dy)
-  dx /= length
-  dy /= length
-
-  let guard = 0
-  while(rectIntersectsSafeZone(lionX, lionY, LION_W, LION_H) && guard < 250){
-    lionX += dx * 4
-    lionY += dy * 4
-    guard++
-  }
-
-  clampLionPosition()
-}
-
-function renderLion(angle = 0, facingLeft = false){
-  lion.style.left = lionX + "px"
-  lion.style.top = lionY + "px"
-
-  const flip = facingLeft ? -1 : 1
-  lion.style.transform = `scaleX(${flip}) rotate(${angle}deg)`
-}
-
-function placeBubble(){
-  const bubbleWidth = bubble.offsetWidth || 150
-  const bubbleHeight = bubble.offsetHeight || 54
-
-  let bubbleX = lionX + 90
-  let bubbleY = lionY - 30
-
-  if(bubbleX + bubbleWidth > window.innerWidth - 10){
-    bubbleX = lionX - bubbleWidth + 70
-  }
-
-  if(bubbleX < 10) bubbleX = 10
-  if(bubbleY < 10) bubbleY = lionY + 10
-
-  bubble.style.left = bubbleX + "px"
-  bubble.style.top = bubbleY + "px"
-}
-
-/* MOUVEMENT DU LION */
+/* MOUVEMENT LION */
 
 function moveLion(){
-  if(!running || paused) return
 
-  let dx = targetX - lionX
-  let dy = targetY - lionY
-  let dist = Math.sqrt(dx * dx + dy * dy)
+if(!running || paused) return
 
-  if(dist < 18 || rectIntersectsSafeZone(targetX, targetY, LION_W, LION_H)){
-    newTarget()
-    dx = targetX - lionX
-    dy = targetY - lionY
-    dist = Math.sqrt(dx * dx + dy * dy)
-  }
+let dx=targetX-x
+let dy=targetY-y
 
-  const speed = 2.1
+let dist=Math.sqrt(dx*dx+dy*dy)
 
-  if(dist > 0){
-    const nextX = lionX + (dx / dist) * speed
-    const nextY = lionY + (dy / dist) * speed
+if(dist<20) newTarget()
 
-    if(!rectIntersectsSafeZone(nextX, nextY, LION_W, LION_H)){
-      lionX = nextX
-      lionY = nextY
-    }else{
-      newTarget()
-    }
-  }
+x+=dx*0.02
+y+=dy*0.02
 
-  pushLionOutOfTimerZone()
-  clampLionPosition()
+lion.style.left=x+"px"
+lion.style.top=y+"px"
 
-  const angle = Math.atan2(dy, dx) * 180 / Math.PI * 0.08
-  const facingLeft = dx < 0
+anim=requestAnimationFrame(moveLion)
 
-  renderLion(angle, facingLeft)
-
-  lionAnim = requestAnimationFrame(moveLion)
 }
+
+/* START LION */
 
 function startLion(){
-  lion.style.display = "block"
-  lion.classList.remove("paused")
-  lion.classList.remove("star")
-  lion.classList.add("skating")
-  bubble.style.display = "none"
 
-  const maxX = window.innerWidth - LION_W
-  const maxY = window.innerHeight - LION_H - 25
+lion.style.display="block"
+lion.classList.remove("star")
+lion.classList.remove("paused")
+lion.classList.add("skating")
 
-  let tries = 0
-  do{
-    lionX = Math.random() * Math.max(20, maxX - 20)
-    lionY = Math.random() * Math.max(20, maxY - 20)
-    tries++
-  }while(rectIntersectsSafeZone(lionX, lionY, LION_W, LION_H) && tries < 250)
+bubble.style.display="none"
 
-  renderLion(0, false)
-  newTarget()
+x=Math.random()*(window.innerWidth-150)
+y=Math.random()*(window.innerHeight-150)
 
-  cancelAnimationFrame(lionAnim)
-  lionAnim = requestAnimationFrame(moveLion)
+lion.style.left=x+"px"
+lion.style.top=y+"px"
+
+newTarget()
+moveLion()
+
 }
 
-function showLionStarPose(){
-  cancelAnimationFrame(lionAnim)
+/* FIN */
 
-  lion.classList.remove("paused")
-  lion.classList.remove("skating")
-  lion.classList.add("star")
-  lion.style.display = "block"
+function endPose(){
 
-  const sizeW = LION_W
-  const sizeH = LION_H
-  const maxX = window.innerWidth - sizeW
-  const maxY = window.innerHeight - sizeH - 25
+cancelAnimationFrame(anim)
 
-  let finalX = lionX
-  let finalY = lionY
+lion.classList.remove("skating")
+lion.classList.add("star")
 
-  if(rectIntersectsSafeZone(finalX, finalY, sizeW, sizeH)){
-    const zone = getTimerSafeZone()
+bubble.style.display="block"
 
-    const positions = [
-      { x: Math.max(10, zone.left - sizeW - 20), y: Math.max(10, zone.top) },
-      { x: Math.min(maxX - 10, zone.right + 20), y: Math.max(10, zone.top) },
-      { x: Math.max(10, zone.left), y: Math.max(10, zone.top - sizeH - 20) },
-      { x: Math.max(10, zone.left), y: Math.min(maxY - 10, zone.bottom + 20) }
-    ]
+bubble.style.left=(x+90)+"px"
+bubble.style.top=(y-20)+"px"
 
-    const valid = positions.find(p => !rectIntersectsSafeZone(p.x, p.y, sizeW, sizeH))
-
-    if(valid){
-      finalX = valid.x
-      finalY = valid.y
-    }else{
-      finalX = 10
-      finalY = 10
-    }
-  }
-
-  lionX = Math.max(0, Math.min(maxX, finalX))
-  lionY = Math.max(0, Math.min(maxY, finalY))
-
-  lion.style.left = lionX + "px"
-  lion.style.top = lionY + "px"
-  lion.style.transform = "rotate(0deg) scale(1.08)"
-
-  bubble.style.display = "block"
-  placeBubble()
-}
-
-function stopLion(){
-  cancelAnimationFrame(lionAnim)
-  lion.style.display = "none"
-  lion.classList.remove("paused")
-  lion.classList.remove("star")
-  lion.classList.remove("skating")
-  lion.style.transform = ""
-  bubble.style.display = "none"
-}
-
-function pauseLion(){
-  lion.classList.add("paused")
-}
-
-function resumeLion(){
-  lion.classList.remove("paused")
-  cancelAnimationFrame(lionAnim)
-  lionAnim = requestAnimationFrame(moveLion)
 }
 
 /* TIMER */
 
 function runTimer(){
-  if(paused) return
 
-  time--
+if(paused) return
 
-  timer.textContent = time
+time--
 
-  timer.classList.add("pulse")
-  setTimeout(() => timer.classList.remove("pulse"), 200)
+timer.textContent=time
 
-  const progress = ((total - time) / total) * 100
-  bar.style.width = progress + "%"
+let progress=((total-time)/total)*100
+bar.style.width=progress+"%"
 
-  if(time === 15){
-    playSound(midSound)
-  }
+if(time===15) playSound(midSound)
 
-  if(time <= 0){
-    clearInterval(interval)
-    running = false
+if(time<=0){
 
-    timer.textContent = "0"
-    timer.style.color = "#f44336"
-    bar.style.width = "100%"
+clearInterval(interval)
+running=false
 
-    playSound(endSound)
-    showLionStarPose()
-  }
+timer.textContent="0"
+timer.style.color="#f44336"
+
+bar.style.width="100%"
+
+playSound(endSound)
+
+endPose()
+
 }
 
-/* START */
+}
+
+/* START TIMER */
 
 function startTimer(){
-  clearInterval(interval)
 
-  time = total
-  paused = false
-  running = true
+clearInterval(interval)
 
-  timer.textContent = time
-  timer.style.color = "#993399"
-  bar.style.width = "0%"
+time=total
+paused=false
+running=true
 
-  playSound(startSound)
-  startLion()
+timer.textContent=time
+timer.style.color="#993399"
 
-  interval = setInterval(runTimer, 1000)
+bar.style.width="0%"
+
+playSound(startSound)
+
+startLion()
+
+interval=setInterval(runTimer,1000)
+
 }
 
-/* STOP / RESET */
+/* RESET */
 
 function stopTimer(){
-  clearInterval(interval)
 
-  time = total
-  paused = false
-  running = false
+clearInterval(interval)
 
-  timer.textContent = total
-  timer.style.color = "#993399"
-  bar.style.width = "0%"
+running=false
+paused=false
 
-  stopLion()
+time=total
+
+timer.textContent=total
+timer.style.color="#993399"
+
+bar.style.width="0%"
+
+lion.style.display="none"
+bubble.style.display="none"
+
 }
 
 /* CLAVIER */
 
-document.addEventListener("keydown", (e) => {
-  if(e.code === "Enter"){
-    e.preventDefault()
+document.addEventListener("keydown",(e)=>{
 
-    if(!running){
-      startTimer()
-    }else{
-      stopTimer()
-    }
-  }
+if(e.code==="Enter"){
 
-  if(e.code === "Space"){
-    e.preventDefault()
+if(!running){
+startTimer()
+}else{
+stopTimer()
+}
 
-    if(running){
-      paused = !paused
+}
 
-      if(paused){
-        pauseLion()
-      }else{
-        resumeLion()
-      }
-    }
-  }
+if(e.code==="Space"){
+
+if(running){
+paused=!paused
+lion.classList.toggle("paused")
+}
+
+}
+
 })
 
-/* RESIZE */
-
-window.addEventListener("resize", () => {
-  clampLionPosition()
-  lion.style.left = lionX + "px"
-  lion.style.top = lionY + "px"
-
-  if(bubble.style.display === "block"){
-    placeBubble()
-  }
-
-  if(running && !paused && rectIntersectsSafeZone(lionX, lionY, LION_W, LION_H)){
-    newTarget()
-    pushLionOutOfTimerZone()
-    lion.style.left = lionX + "px"
-    lion.style.top = lionY + "px"
-  }
-})
 </script>
 
 </body>
