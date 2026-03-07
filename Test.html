@@ -167,8 +167,11 @@ function runTimer() {
     if (time <= 0) {
 
         clearInterval(interval);
+        
         timer.textContent = "0"; 
+        
         timer.style.color = "#f44336"; // rouge
+        
         endSound.play();
 
     }
