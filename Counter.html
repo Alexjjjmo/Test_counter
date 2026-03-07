@@ -38,26 +38,6 @@ transition:transform .25s;
 transform:scale(1.15);
 }
 
-/* START BUTTON */
-
-#startBtn{
-
-position:absolute;
-bottom:80px;
-
-font-size:28px;
-padding:15px 45px;
-
-border:none;
-border-radius:12px;
-
-background:#00c853;
-color:white;
-
-cursor:pointer;
-font-weight:bold;
-}
-
 /* PROGRESS BAR */
 
 #progressContainer{
@@ -88,8 +68,6 @@ transition:width 1s linear;
 
 <div id="timer">30</div>
 
-<button id="startBtn">START</button>
-
 <div id="progressContainer">
 <div id="progressBar"></div>
 </div>
@@ -105,31 +83,16 @@ transition:width 1s linear;
 let time = 30
 const total = 30
 
-let interval
+let interval = null
 let paused = false
+let running = false
 
 const timer = document.getElementById("timer")
-const startBtn = document.getElementById("startBtn")
 const bar = document.getElementById("progressBar")
 
 const startSound = document.getElementById("startSound")
 const midSound = document.getElementById("midSound")
 const endSound = document.getElementById("endSound")
-
-
-/* START */
-
-startBtn.onclick = () => {
-
-startBtn.style.display="none"
-
-timer.style.color="#993399"
-
-startSound.play()
-
-interval = setInterval(runTimer,1000)
-
-}
 
 
 /* TIMER */
@@ -153,6 +116,7 @@ if(time===15) midSound.play()
 if(time<=0){
 
 clearInterval(interval)
+running=false
 
 timer.textContent="0"
 timer.style.color="#f44336"
@@ -166,35 +130,72 @@ endSound.play()
 }
 
 
-/* CLAVIER */
+/* START */
 
-document.addEventListener("keydown",(e)=>{
+function startTimer(){
 
-/* PAUSE / RESUME = ESPACE */
+timer.style.color="#993399"
 
-if(e.code==="Space"){
+startSound.play()
 
-e.preventDefault()
+interval=setInterval(runTimer,1000)
 
-paused=!paused
+running=true
 
 }
 
-/* STOP = ENTREE */
 
-if(e.code==="Enter"){
+/* STOP / RESET */
+
+function stopTimer(){
 
 clearInterval(interval)
 
 time=total
 paused=false
+running=false
 
 timer.textContent=total
 timer.style.color="#993399"
 
 bar.style.width="0%"
 
-startBtn.style.display="block"
+}
+
+
+/* CLAVIER */
+
+document.addEventListener("keydown",(e)=>{
+
+/* ENTREE */
+
+if(e.code==="Enter"){
+
+e.preventDefault()
+
+if(!running){
+
+startTimer()
+
+}else{
+
+stopTimer()
+
+}
+
+}
+
+/* ESPACE */
+
+if(e.code==="Space"){
+
+e.preventDefault()
+
+if(running){
+
+paused=!paused
+
+}
 
 }
 
