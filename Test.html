@@ -6,230 +6,288 @@
 <title>HIIT Timer</title>
 
 <style>
-
 body{
-margin:0;
-background:white;
-color:#993399;
-font-family:Arial, Helvetica, sans-serif;
-display:flex;
-flex-direction:column;
-justify-content:center;
-align-items:center;
-height:100vh;
-overflow:hidden;
-position:relative;
+  margin:0;
+  background:white;
+  color:#993399;
+  font-family:Arial, Helvetica, sans-serif;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  overflow:hidden;
+  position:relative;
 }
 
-/* TIMER */
-
 #timer{
-font-size:22vw;
-font-weight:900;
-transition:transform .25s;
-z-index:5;
-position:relative;
+  font-size:22vw;
+  font-weight:900;
+  transition:transform .25s;
+  z-index:5;
+  position:relative;
 }
 
 .pulse{
-transform:scale(1.15);
+  transform:scale(1.15);
 }
 
-/* PROGRESS BAR */
-
 #progressContainer{
-position:absolute;
-bottom:0;
-width:100%;
-height:25px;
-background:#eee;
-z-index:10;
+  position:absolute;
+  bottom:0;
+  width:100%;
+  height:25px;
+  background:#eee;
+  z-index:10;
 }
 
 #progressBar{
-height:100%;
-width:0%;
-background:#00c853;
-transition:width 1s linear;
+  height:100%;
+  width:0%;
+  background:#00c853;
+  transition:width 1s linear;
 }
 
 /* SKATER */
 
 #skater{
-position:absolute;
-width:54px;
-height:90px;
-display:none;
-pointer-events:none;
-z-index:2;
+  position:absolute;
+  width:54px;
+  height:90px;
+  display:none;
+  pointer-events:none;
+  z-index:2;
+  transform-origin:center center;
 }
-
-/* tête */
 
 .head{
-position:absolute;
-top:0;
-left:18px;
-width:18px;
-height:18px;
-background:#993399;
-border-radius:50%;
+  position:absolute;
+  top:0;
+  left:18px;
+  width:18px;
+  height:18px;
+  background:#993399;
+  border-radius:50%;
 }
-
-/* corps */
 
 .torso{
-position:absolute;
-top:18px;
-left:22px;
-width:10px;
-height:24px;
-background:#993399;
-border-radius:6px;
+  position:absolute;
+  top:18px;
+  left:22px;
+  width:10px;
+  height:24px;
+  background:#993399;
+  border-radius:6px;
 }
 
-/* bras */
-
 .arm{
-position:absolute;
-top:21px;
-width:6px;
-height:22px;
-background:#993399;
-transform-origin:top center;
+  position:absolute;
+  top:21px;
+  width:6px;
+  height:22px;
+  background:#993399;
+  border-radius:4px;
+  transform-origin:top center;
 }
 
 .arm1{
-left:15px;
-animation:armMove1 .45s infinite alternate;
+  left:15px;
+  animation:armMove1 .45s infinite alternate ease-in-out;
 }
 
 .arm2{
-left:33px;
-animation:armMove2 .45s infinite alternate;
+  left:33px;
+  animation:armMove2 .45s infinite alternate ease-in-out;
 }
 
-/* jambes */
-
 .leg{
-position:absolute;
-top:40px;
-width:7px;
-height:30px;
-background:#444;
-transform-origin:top center;
+  position:absolute;
+  top:40px;
+  width:7px;
+  height:30px;
+  background:#444;
+  border-radius:4px;
+  transform-origin:top center;
 }
 
 .leg1{
-left:18px;
-animation:legMove1 .45s infinite alternate;
+  left:18px;
+  animation:legMove1 .45s infinite alternate ease-in-out;
 }
 
 .leg2{
-left:29px;
-animation:legMove2 .45s infinite alternate;
+  left:29px;
+  animation:legMove2 .45s infinite alternate ease-in-out;
 }
 
-/* rollers */
-
 .skate{
-position:absolute;
-width:18px;
-height:6px;
-background:#222;
-border-radius:4px;
+  position:absolute;
+  width:18px;
+  height:6px;
+  background:#222;
+  border-radius:4px;
 }
 
 .skate1{
-top:67px;
-left:11px;
-animation:legMove1 .45s infinite alternate;
+  top:67px;
+  left:11px;
+  animation:legMove1 .45s infinite alternate ease-in-out;
+  transform-origin:top center;
 }
 
 .skate2{
-top:67px;
-left:27px;
-animation:legMove2 .45s infinite alternate;
+  top:67px;
+  left:27px;
+  animation:legMove2 .45s infinite alternate ease-in-out;
+  transform-origin:top center;
 }
 
 .wheel{
-position:absolute;
-width:5px;
-height:5px;
-background:#00c853;
-border-radius:50%;
-bottom:-4px;
-animation:spin .25s linear infinite;
+  position:absolute;
+  width:5px;
+  height:5px;
+  background:#00c853;
+  border-radius:50%;
+  bottom:-4px;
+  animation:spin .25s linear infinite;
 }
 
-.w1{ left:2px;}
-.w2{ left:10px;}
-.w3{ left:2px;}
-.w4{ left:10px;}
+.w1{ left:2px; }
+.w2{ left:10px; }
+.w3{ left:2px; }
+.w4{ left:10px; }
 
 @keyframes legMove1{
-from{transform:rotate(28deg)}
-to{transform:rotate(-28deg)}
+  from{ transform:rotate(28deg); }
+  to{ transform:rotate(-28deg); }
 }
 
 @keyframes legMove2{
-from{transform:rotate(-28deg)}
-to{transform:rotate(28deg)}
+  from{ transform:rotate(-28deg); }
+  to{ transform:rotate(28deg); }
 }
 
 @keyframes armMove1{
-from{transform:rotate(-30deg)}
-to{transform:rotate(20deg)}
+  from{ transform:rotate(-30deg); }
+  to{ transform:rotate(20deg); }
 }
 
 @keyframes armMove2{
-from{transform:rotate(20deg)}
-to{transform:rotate(-30deg)}
+  from{ transform:rotate(20deg); }
+  to{ transform:rotate(-30deg); }
 }
 
 @keyframes spin{
-from{transform:rotate(0)}
-to{transform:rotate(360deg)}
+  from{ transform:rotate(0deg); }
+  to{ transform:rotate(360deg); }
 }
 
-/* étoile de mer */
-
-.star .arm,
-.star .leg,
-.star .skate,
-.star .wheel{
-animation:none;
+#skater.paused .arm,
+#skater.paused .leg,
+#skater.paused .skate,
+#skater.paused .wheel{
+  animation-play-state:paused;
 }
 
-.star .arm1{ transform:rotate(-70deg);}
-.star .arm2{ transform:rotate(70deg);}
-.star .leg1{ transform:rotate(40deg);}
-.star .leg2{ transform:rotate(-40deg);}
+/* Pose étoile de mer */
+#skater.star{
+  width:90px;
+  height:90px;
+  transform:none !important;
+}
+
+#skater.star .arm,
+#skater.star .leg,
+#skater.star .skate,
+#skater.star .wheel{
+  animation:none !important;
+}
+
+#skater.star .head{
+  left:36px;
+  top:2px;
+}
+
+#skater.star .torso{
+  left:40px;
+  top:20px;
+  height:24px;
+}
+
+#skater.star .arm1{
+  left:24px;
+  top:22px;
+  transform:rotate(-65deg);
+}
+
+#skater.star .arm2{
+  left:56px;
+  top:22px;
+  transform:rotate(65deg);
+}
+
+#skater.star .leg1{
+  left:29px;
+  top:43px;
+  transform:rotate(40deg);
+}
+
+#skater.star .leg2{
+  left:52px;
+  top:43px;
+  transform:rotate(-40deg);
+}
+
+#skater.star .skate1{
+  left:18px;
+  top:68px;
+  transform:rotate(40deg);
+}
+
+#skater.star .skate2{
+  left:54px;
+  top:68px;
+  transform:rotate(-40deg);
+}
 
 /* BULLE */
-
 #bubble{
-position:absolute;
-background:white;
-border:3px solid #993399;
-border-radius:20px;
-padding:10px 16px;
-font-weight:bold;
-font-size:20px;
-display:none;
-z-index:20;
+  position:absolute;
+  background:white;
+  border:3px solid #993399;
+  border-radius:18px;
+  padding:10px 14px;
+  font-weight:700;
+  font-size:20px;
+  display:none;
+  z-index:20;
+  white-space:nowrap;
 }
 
 #bubble:after{
-content:"";
-position:absolute;
-bottom:-12px;
-left:20px;
-border-width:12px 12px 0;
-border-style:solid;
-border-color:#993399 transparent;
+  content:"";
+  position:absolute;
+  left:20px;
+  bottom:-14px;
+  width:0;
+  height:0;
+  border-left:10px solid transparent;
+  border-right:10px solid transparent;
+  border-top:14px solid #993399;
 }
 
+#bubble:before{
+  content:"";
+  position:absolute;
+  left:22px;
+  bottom:-10px;
+  width:0;
+  height:0;
+  border-left:8px solid transparent;
+  border-right:8px solid transparent;
+  border-top:12px solid white;
+  z-index:1;
+}
 </style>
 </head>
 <body>
@@ -237,32 +295,28 @@ border-color:#993399 transparent;
 <div id="timer">30</div>
 
 <div id="skater">
+  <div class="head"></div>
+  <div class="torso"></div>
+  <div class="arm arm1"></div>
+  <div class="arm arm2"></div>
+  <div class="leg leg1"></div>
+  <div class="leg leg2"></div>
 
-<div class="head"></div>
-<div class="torso"></div>
+  <div class="skate skate1">
+    <div class="wheel w1"></div>
+    <div class="wheel w2"></div>
+  </div>
 
-<div class="arm arm1"></div>
-<div class="arm arm2"></div>
-
-<div class="leg leg1"></div>
-<div class="leg leg2"></div>
-
-<div class="skate skate1">
-<div class="wheel w1"></div>
-<div class="wheel w2"></div>
-</div>
-
-<div class="skate skate2">
-<div class="wheel w3"></div>
-<div class="wheel w4"></div>
-</div>
-
+  <div class="skate skate2">
+    <div class="wheel w3"></div>
+    <div class="wheel w4"></div>
+  </div>
 </div>
 
 <div id="bubble">Bonne année !</div>
 
 <div id="progressContainer">
-<div id="progressBar"></div>
+  <div id="progressBar"></div>
 </div>
 
 <audio id="startSound" src="start.wav"></audio>
@@ -270,167 +324,381 @@ border-color:#993399 transparent;
 <audio id="endSound" src="end.wav"></audio>
 
 <script>
-
 let time = 30
 const total = 30
 
-let interval=null
-let running=false
-let paused=false
+let interval = null
+let paused = false
+let running = false
 
-const timer=document.getElementById("timer")
-const bar=document.getElementById("progressBar")
+const timer = document.getElementById("timer")
+const bar = document.getElementById("progressBar")
 
-const skater=document.getElementById("skater")
-const bubble=document.getElementById("bubble")
+const startSound = document.getElementById("startSound")
+const midSound = document.getElementById("midSound")
+const endSound = document.getElementById("endSound")
 
-let x=200
-let y=200
-let targetX=300
-let targetY=200
-let anim=null
+const skater = document.getElementById("skater")
+const bubble = document.getElementById("bubble")
+
+let skateX = 80
+let skateY = 120
+let targetX = 200
+let targetY = 180
+let skateAnim = null
+
+function playSound(audioEl){
+  if(!audioEl) return
+  audioEl.currentTime = 0
+  audioEl.play().catch(() => {})
+}
+
+function getTimerSafeZone(){
+  const rect = timer.getBoundingClientRect()
+  const margin = 50
+
+  return {
+    left: rect.left - margin,
+    right: rect.right + margin,
+    top: rect.top - margin,
+    bottom: rect.bottom + margin
+  }
+}
+
+function rectIntersectsSafeZone(x, y, w, h){
+  const zone = getTimerSafeZone()
+  return !(
+    x + w < zone.left ||
+    x > zone.right ||
+    y + h < zone.top ||
+    y > zone.bottom
+  )
+}
 
 function newTarget(){
+  const skaterW = skater.classList.contains("star") ? 90 : 54
+  const skaterH = skater.classList.contains("star") ? 90 : 90
 
-targetX=Math.random()*(window.innerWidth-100)
-targetY=Math.random()*(window.innerHeight-150)
+  const maxX = window.innerWidth - skaterW
+  const maxY = window.innerHeight - skaterH - 25
 
+  let tries = 0
+  do{
+    targetX = Math.random() * Math.max(20, maxX - 20)
+    targetY = Math.random() * Math.max(20, maxY - 20)
+    tries++
+  }while(rectIntersectsSafeZone(targetX, targetY, skaterW, skaterH) && tries < 200)
+}
+
+function clampSkaterPosition(){
+  const skaterW = skater.classList.contains("star") ? 90 : 54
+  const skaterH = skater.classList.contains("star") ? 90 : 90
+
+  const maxX = window.innerWidth - skaterW
+  const maxY = window.innerHeight - skaterH - 25
+
+  if(skateX < 0) skateX = 0
+  if(skateY < 0) skateY = 0
+  if(skateX > maxX) skateX = maxX
+  if(skateY > maxY) skateY = maxY
+}
+
+function pushOutOfTimerZone(){
+  const skaterW = 54
+  const skaterH = 90
+  const zone = getTimerSafeZone()
+
+  if(!rectIntersectsSafeZone(skateX, skateY, skaterW, skaterH)) return
+
+  const centerX = skateX + skaterW / 2
+  const centerY = skateY + skaterH / 2
+  const zoneCenterX = (zone.left + zone.right) / 2
+  const zoneCenterY = (zone.top + zone.bottom) / 2
+
+  let dx = centerX - zoneCenterX
+  let dy = centerY - zoneCenterY
+
+  if(dx === 0 && dy === 0){
+    dx = 1
+    dy = 1
+  }
+
+  const len = Math.sqrt(dx * dx + dy * dy)
+  dx /= len
+  dy /= len
+
+  let guard = 0
+  while(rectIntersectsSafeZone(skateX, skateY, skaterW, skaterH) && guard < 200){
+    skateX += dx * 4
+    skateY += dy * 4
+    guard++
+  }
+
+  clampSkaterPosition()
 }
 
 function moveSkater(){
+  if(!running || paused) return
 
-if(!running || paused) return
+  const skaterW = 54
+  const skaterH = 90
 
-let dx=targetX-x
-let dy=targetY-y
+  let dx = targetX - skateX
+  let dy = targetY - skateY
+  let dist = Math.sqrt(dx * dx + dy * dy)
 
-let dist=Math.sqrt(dx*dx+dy*dy)
+  if(dist < 15 || rectIntersectsSafeZone(targetX, targetY, skaterW, skaterH)){
+    newTarget()
+    dx = targetX - skateX
+    dy = targetY - skateY
+    dist = Math.sqrt(dx * dx + dy * dy)
+  }
 
-if(dist<20) newTarget()
+  const speed = 2.2
 
-x+=dx*0.02
-y+=dy*0.02
+  if(dist > 0){
+    const nextX = skateX + (dx / dist) * speed
+    const nextY = skateY + (dy / dist) * speed
 
-skater.style.left=x+"px"
-skater.style.top=y+"px"
+    if(!rectIntersectsSafeZone(nextX, nextY, skaterW, skaterH)){
+      skateX = nextX
+      skateY = nextY
+    }else{
+      newTarget()
+    }
+  }
 
-anim=requestAnimationFrame(moveSkater)
+  pushOutOfTimerZone()
+  clampSkaterPosition()
 
+  const angle = Math.atan2(dy, dx) * 180 / Math.PI
+  const face = dx < 0 ? -1 : 1
+
+  skater.style.left = skateX + "px"
+  skater.style.top = skateY + "px"
+  skater.style.transform = `scaleX(${face}) rotate(${angle * 0.08}deg)`
+
+  skateAnim = requestAnimationFrame(moveSkater)
+}
+
+function placeBubble(){
+  const bubbleWidth = bubble.offsetWidth || 140
+  const bubbleHeight = bubble.offsetHeight || 50
+
+  let bubbleX = skateX + 30
+  let bubbleY = skateY - 50
+
+  if(bubbleX + bubbleWidth > window.innerWidth - 10){
+    bubbleX = skateX - bubbleWidth + 50
+  }
+
+  if(bubbleX < 10) bubbleX = 10
+  if(bubbleY < 10) bubbleY = skateY + 10
+
+  bubble.style.left = bubbleX + "px"
+  bubble.style.top = bubbleY + "px"
 }
 
 function startSkater(){
+  skater.style.display = "block"
+  skater.classList.remove("paused")
+  skater.classList.remove("star")
+  bubble.style.display = "none"
 
-skater.style.display="block"
+  const maxX = window.innerWidth - 54
+  const maxY = window.innerHeight - 90 - 25
 
-x=Math.random()*(window.innerWidth-100)
-y=Math.random()*(window.innerHeight-150)
+  let tries = 0
+  do{
+    skateX = Math.random() * Math.max(20, maxX - 20)
+    skateY = Math.random() * Math.max(20, maxY - 20)
+    tries++
+  }while(rectIntersectsSafeZone(skateX, skateY, 54, 90) && tries < 200)
 
-skater.style.left=x+"px"
-skater.style.top=y+"px"
+  skater.style.left = skateX + "px"
+  skater.style.top = skateY + "px"
 
-newTarget()
-moveSkater()
+  newTarget()
 
+  cancelAnimationFrame(skateAnim)
+  skateAnim = requestAnimationFrame(moveSkater)
 }
 
-function endPose(){
+function showStarPose(){
+  cancelAnimationFrame(skateAnim)
+  skater.classList.remove("paused")
+  skater.classList.add("star")
+  skater.style.display = "block"
 
-cancelAnimationFrame(anim)
+  const size = 90
+  const maxX = window.innerWidth - size
+  const maxY = window.innerHeight - size - 25
 
-skater.classList.add("star")
+  let finalX = skateX
+  let finalY = skateY
 
-bubble.style.display="block"
+  if(rectIntersectsSafeZone(finalX, finalY, size, size)){
+    const zone = getTimerSafeZone()
 
-bubble.style.left=(x+40)+"px"
-bubble.style.top=(y-30)+"px"
+    const positions = [
+      { x: Math.max(10, zone.left - size - 20), y: Math.max(10, zone.top) },
+      { x: Math.min(maxX - 10, zone.right + 20), y: Math.max(10, zone.top) },
+      { x: Math.max(10, zone.left), y: Math.max(10, zone.top - size - 20) },
+      { x: Math.max(10, zone.left), y: Math.min(maxY - 10, zone.bottom + 20) }
+    ]
 
+    const valid = positions.find(p => !rectIntersectsSafeZone(p.x, p.y, size, size))
+
+    if(valid){
+      finalX = valid.x
+      finalY = valid.y
+    }else{
+      finalX = 10
+      finalY = 10
+    }
+  }
+
+  skateX = Math.max(0, Math.min(maxX, finalX))
+  skateY = Math.max(0, Math.min(maxY, finalY))
+
+  skater.style.left = skateX + "px"
+  skater.style.top = skateY + "px"
+  skater.style.transform = "none"
+
+  bubble.style.display = "block"
+  placeBubble()
+}
+
+function stopSkater(){
+  cancelAnimationFrame(skateAnim)
+  skater.style.display = "none"
+  skater.classList.remove("paused")
+  skater.classList.remove("star")
+  skater.style.transform = ""
+  bubble.style.display = "none"
+}
+
+function pauseSkater(){
+  skater.classList.add("paused")
+}
+
+function resumeSkater(){
+  skater.classList.remove("paused")
+  cancelAnimationFrame(skateAnim)
+  skateAnim = requestAnimationFrame(moveSkater)
 }
 
 function runTimer(){
+  if(paused) return
 
-if(paused) return
+  time--
 
-time--
+  timer.textContent = time
 
-timer.textContent=time
+  timer.classList.add("pulse")
+  setTimeout(() => timer.classList.remove("pulse"), 200)
 
-let progress=((total-time)/total)*100
-bar.style.width=progress+"%"
+  const progress = ((total - time) / total) * 100
+  bar.style.width = progress + "%"
 
-if(time<=0){
+  if(time === 15){
+    playSound(midSound)
+  }
 
-clearInterval(interval)
-running=false
+  if(time <= 0){
+    clearInterval(interval)
+    running = false
 
-timer.style.color="#f44336"
-bar.style.width="100%"
+    timer.textContent = "0"
+    timer.style.color = "#f44336"
+    bar.style.width = "100%"
 
-endPose()
-
-}
-
+    playSound(endSound)
+    showStarPose()
+  }
 }
 
 function startTimer(){
+  clearInterval(interval)
 
-time=total
-timer.textContent=time
-timer.style.color="#993399"
+  time = total
+  paused = false
+  running = true
 
-bubble.style.display="none"
-skater.classList.remove("star")
+  timer.textContent = time
+  timer.style.color = "#993399"
+  bar.style.width = "0%"
 
-bar.style.width="0%"
+  playSound(startSound)
+  startSkater()
 
-running=true
-paused=false
-
-startSkater()
-
-interval=setInterval(runTimer,1000)
-
+  interval = setInterval(runTimer, 1000)
 }
 
 function stopTimer(){
+  clearInterval(interval)
 
-clearInterval(interval)
+  time = total
+  paused = false
+  running = false
 
-running=false
-paused=false
+  timer.textContent = total
+  timer.style.color = "#993399"
+  bar.style.width = "0%"
 
-time=total
-timer.textContent=total
-timer.style.color="#993399"
-
-bar.style.width="0%"
-
-skater.style.display="none"
-bubble.style.display="none"
-
+  stopSkater()
 }
 
-document.addEventListener("keydown",(e)=>{
+document.addEventListener("keydown", (e) => {
+  if(e.code === "Enter"){
+    e.preventDefault()
 
-if(e.code==="Enter"){
+    if(!running){
+      startTimer()
+    }else{
+      stopTimer()
+    }
+  }
 
-if(!running){
-startTimer()
-}else{
-stopTimer()
-}
+  if(e.code === "Space"){
+    e.preventDefault()
 
-}
+    if(running){
+      paused = !paused
 
-if(e.code==="Space"){
-
-if(running){
-paused=!paused
-}
-
-}
-
+      if(paused){
+        pauseSkater()
+      }else{
+        resumeSkater()
+      }
+    }
+  }
 })
 
+window.addEventListener("resize", () => {
+  clampSkaterPosition()
+
+  skater.style.left = skateX + "px"
+  skater.style.top = skateY + "px"
+
+  if(bubble.style.display === "block"){
+    placeBubble()
+  }
+
+  if(rectIntersectsSafeZone(
+    skateX,
+    skateY,
+    skater.classList.contains("star") ? 90 : 54,
+    skater.classList.contains("star") ? 90 : 90
+  )){
+    if(running && !paused){
+      newTarget()
+      pushOutOfTimerZone()
+      skater.style.left = skateX + "px"
+      skater.style.top = skateY + "px"
+    }
+  }
+})
 </script>
 
 </body>
