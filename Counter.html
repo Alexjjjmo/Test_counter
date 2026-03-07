@@ -1,142 +1,164 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>HIIT Timer</title>
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: white;
-      color: #993399;
-      font-family: Arial, Helvetica, sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
-    #timer {
-      font-size: 22vw;
-      font-weight: 900;
-      user-select: none;
-    }
+<title>HIIT Timer</title>
 
-    #progressContainer {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 25px;
-      background: #eee;
-    }
+<style>
 
-    #progressBar {
-      width: 0%;
-      height: 100%;
-      background: #00c853;
-      transition: width 1s linear;
-    }
-  </style>
+body{
+margin:0;
+height:100vh;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+background:white;
+color:#993399;
+
+font-family:Arial, Helvetica, sans-serif;
+
+overflow:hidden;
+}
+
+/* CHIFFRES */
+
+#timer{
+
+font-size:70vh;      /* taille stable */
+font-weight:900;
+
+font-family:monospace;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+text-align:center;
+user-select:none;
+
+}
+
+</style>
+
 </head>
+
 <body>
 
-  <div id="timer">30</div>
+<div id="timer">30</div>
 
-  <div id="progressContainer">
-    <div id="progressBar"></div>
-  </div>
+<audio id="startSound" src="start.wav"></audio>
+<audio id="midSound" src="mid.wav"></audio>
+<audio id="endSound" src="end.wav"></audio>
 
-  <audio id="startSound" src="start.wav"></audio>
-  <audio id="midSound" src="mid.wav"></audio>
-  <audio id="endSound" src="end.wav"></audio>
+<script>
 
-  <script>
-    const total = 30;
-    let time = total;
-    let interval = null;
-    let paused = false;
-    let running = false;
+const total = 30
 
-    const timer = document.getElementById("timer");
-    const progressBar = document.getElementById("progressBar");
+let time = total
+let interval = null
+let paused = false
+let running = false
 
-    const startSound = document.getElementById("startSound");
-    const midSound = document.getElementById("midSound");
-    const endSound = document.getElementById("endSound");
+const timer = document.getElementById("timer")
 
-    function updateDisplay() {
-      timer.textContent = time;
-      progressBar.style.width = ((total - time) / total) * 100 + "%";
-    }
+const startSound = document.getElementById("startSound")
+const midSound = document.getElementById("midSound")
+const endSound = document.getElementById("endSound")
 
-    function runTimer() {
-      if (paused) return;
+function updateDisplay(){
 
-      time--;
-      updateDisplay();
+timer.textContent = String(time).padStart(2," ")
 
-      if (time === 15) {
-        midSound.play();
-      }
+}
 
-      if (time <= 0) {
-        clearInterval(interval);
-        interval = null;
-        running = false;
+function runTimer(){
 
-        time = 0;
-        timer.textContent = "0";
-        timer.style.color = "#f44336";
-        progressBar.style.width = "100%";
+if(paused) return
 
-        endSound.play();
-      }
-    }
+time--
 
-    function startTimer() {
-      if (running) return;
+updateDisplay()
 
-      time = total;
-      paused = false;
-      running = true;
+if(time === 15){
+midSound.play()
+}
 
-      timer.style.color = "#993399";
-      updateDisplay();
-      startSound.play();
+if(time <= 0){
 
-      interval = setInterval(runTimer, 1000);
-    }
+clearInterval(interval)
+running = false
 
-    function stopTimer() {
-      clearInterval(interval);
-      interval = null;
-      running = false;
-      paused = false;
-      time = total;
+timer.textContent = "00"
+timer.style.color = "#f44336"
 
-      timer.style.color = "#993399";
-      updateDisplay();
-    }
+endSound.play()
 
-    document.addEventListener("keydown", (e) => {
-      if (e.code === "Enter") {
-        e.preventDefault();
-        running ? stopTimer() : startTimer();
-      }
+}
 
-      if (e.code === "Space") {
-        e.preventDefault();
-        if (running) {
-          paused = !paused;
-        }
-      }
-    });
+}
 
-    updateDisplay();
-  </script>
+function startTimer(){
+
+if(running) return
+
+time = total
+paused = false
+running = true
+
+timer.style.color = "#993399"
+
+updateDisplay()
+
+startSound.play()
+
+interval = setInterval(runTimer,1000)
+
+}
+
+function stopTimer(){
+
+clearInterval(interval)
+
+running = false
+paused = false
+time = total
+
+timer.style.color = "#993399"
+
+updateDisplay()
+
+}
+
+document.addEventListener("keydown",(e)=>{
+
+if(e.code==="Enter"){
+
+e.preventDefault()
+
+running ? stopTimer() : startTimer()
+
+}
+
+if(e.code==="Space"){
+
+e.preventDefault()
+
+if(running){
+paused = !paused
+}
+
+}
+
+})
+
+updateDisplay()
+
+</script>
 
 </body>
 </html>
