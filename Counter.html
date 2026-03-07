@@ -1,42 +1,31 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-
 <title>HIIT Timer</title>
 
 <style>
-
 body{
-margin:0;
-height:100vh;
-
-display:flex;
-justify-content:center;
-align-items:center;
-
-background:white;
-color:#993399;
-
-font-family:monospace;
-
-overflow:hidden;
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:white;
+  color:#993399;
+  font-family:monospace;
+  overflow:hidden;
 }
-
-/* CHIFFRES MAX SANS DÉPASSER */
 
 #timer{
-font-size:80vmin;
-font-weight:900;
-line-height:1;
-text-align:center;
-user-select:none;
+  font-weight:900;
+  line-height:1;
+  text-align:center;
+  user-select:none;
+  white-space:nowrap;
 }
-
 </style>
-
 </head>
 
 <body>
@@ -48,7 +37,6 @@ user-select:none;
 <audio id="endSound" src="end.wav"></audio>
 
 <script>
-
 const total = 30
 
 let time = total
@@ -62,85 +50,102 @@ const startSound = document.getElementById("startSound")
 const midSound = document.getElementById("midSound")
 const endSound = document.getElementById("endSound")
 
+function fitTimer(){
+  let low = 10
+  let high = 2000
+  let best = 10
+
+  const maxWidth = window.innerWidth * 0.95
+  const maxHeight = window.innerHeight * 0.95
+
+  while(low <= high){
+    const mid = Math.floor((low + high) / 2)
+    timer.style.fontSize = mid + "px"
+
+    if(timer.offsetWidth <= maxWidth && timer.offsetHeight <= maxHeight){
+      best = mid
+      low = mid + 1
+    }else{
+      high = mid - 1
+    }
+  }
+
+  timer.style.fontSize = best + "px"
+}
+
 function updateDisplay(){
-timer.textContent = String(time).padStart(2,"0")
+  timer.textContent = String(time).padStart(2,"0")
+  fitTimer()
 }
 
 function runTimer(){
 
-if(paused) return
+  if(paused) return
 
-time--
-updateDisplay()
+  time--
+  updateDisplay()
 
-if(time === 15){
-midSound.play()
-}
+  if(time === 15){
+    midSound.play()
+  }
 
-if(time <= 0){
-
-clearInterval(interval)
-running = false
-
-timer.textContent = "00"
-timer.style.color = "#f44336"
-
-endSound.play()
-
-}
-
+  if(time <= 0){
+    clearInterval(interval)
+    interval = null
+    running = false
+    time = 0
+    timer.style.color = "#f44336"
+    updateDisplay()
+    endSound.play()
+  }
 }
 
 function startTimer(){
 
-if(running) return
+  if(running) return
 
-time = total
-paused = false
-running = true
+  time = total
+  paused = false
+  running = true
 
-timer.style.color = "#993399"
+  timer.style.color = "#993399"
+  updateDisplay()
 
-updateDisplay()
-
-startSound.play()
-
-interval = setInterval(runTimer,1000)
-
+  startSound.play()
+  interval = setInterval(runTimer,1000)
 }
 
 function stopTimer(){
 
-clearInterval(interval)
+  clearInterval(interval)
+  interval = null
 
-running = false
-paused = false
-time = total
+  running = false
+  paused = false
+  time = total
 
-timer.style.color = "#993399"
-
-updateDisplay()
-
+  timer.style.color = "#993399"
+  updateDisplay()
 }
 
 document.addEventListener("keydown",(e)=>{
 
-if(e.code==="Enter"){
-e.preventDefault()
-running ? stopTimer() : startTimer()
-}
+  if(e.code==="Enter"){
+    e.preventDefault()
+    running ? stopTimer() : startTimer()
+  }
 
-if(e.code==="Space"){
-e.preventDefault()
-if(running){
-paused = !paused
-}
-}
-
+  if(e.code==="Space"){
+    e.preventDefault()
+    if(running){
+      paused = !paused
+    }
+  }
 })
 
-updateDisplay()
+window.addEventListener("resize", updateDisplay)
 
+updateDisplay()
 </script>
 
 </body>
