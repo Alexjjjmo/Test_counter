@@ -9,236 +9,199 @@
 
 <style>
 
-/* ---------- PAGE ---------- */
+/* PAGE */
 
 body{
-    margin:0;
-    background:white;
-    color:#993399;
-    font-family:Arial, Helvetica, sans-serif;
+margin:0;
+background:white;
+color:#993399;
+font-family:Arial, Helvetica, sans-serif;
 
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
 
-    height:100vh;
-    overflow:hidden;
+height:100vh;
+overflow:hidden;
 }
 
-/* ---------- TIMER ---------- */
+/* TIMER */
 
 #timer{
-    font-size:22vw;
-    font-weight:900;          /* chiffres bien gras */
-    transition:transform .25s;
+font-size:22vw;
+font-weight:900;
+transition:transform .25s;
 }
 
 .pulse{
-    transform:scale(1.15);
+transform:scale(1.15);
 }
 
-/* ---------- START ---------- */
-
-#startBtn{
-
-    position:absolute;
-    bottom:80px;
-
-    font-size:28px;
-    padding:15px 45px;
-
-    border:none;
-    border-radius:12px;
-
-    background:#00c853;
-    color:white;
-
-    cursor:pointer;
-    font-weight:bold;
-}
-
-/* ---------- CONTROLS ---------- */
-
-#controls{
-    margin-top:30px;
-    display:none;
-    gap:20px;
-}
-
-#controls button{
-
-    font-size:22px;
-    padding:12px 30px;
-
-    border:none;
-    border-radius:10px;
-
-    cursor:pointer;
-    font-weight:bold;
-}
-
-#pauseBtn{
-    background:#ff9800;
-    color:white;
-}
-
-#stopBtn{
-    background:#f44336;
-    color:white;
-}
-
-/* ---------- PROGRESS BAR ---------- */
+/* PROGRESS BAR */
 
 #progressContainer{
 
-    position:absolute;
-    bottom:0;
+position:absolute;
+bottom:0;
 
-    width:100%;
-    height:25px;
+width:100%;
+height:25px;
 
-    background:#eee;
+background:#eee;
 }
 
 #progressBar{
 
-    height:100%;
-    width:0%;
+height:100%;
+width:0%;
 
-    background:#00c853;
+background:#00c853;
 
-    transition:width 1s linear;
+transition:width 1s linear;
 }
 
 </style>
 </head>
 
-
 <body>
 
 <div id="timer">30</div>
-
-<div id="controls">
-<button id="pauseBtn">PAUSE</button>
-<button id="stopBtn">STOP</button>
-</div>
-
-<button id="startBtn">START</button>
 
 <div id="progressContainer">
 <div id="progressBar"></div>
 </div>
 
-<!-- Sons -->
-
 <audio id="startSound" src="start.wav"></audio>
 <audio id="midSound" src="mid.wav"></audio>
 <audio id="endSound" src="end.wav"></audio>
 
-
 <script>
 
-/* ---------- VARIABLES ---------- */
+/* VARIABLES */
 
 let time = 30
 const total = 30
 
-let interval
+let interval = null
 let paused = false
+let running = false
 
 const timer = document.getElementById("timer")
-const startBtn = document.getElementById("startBtn")
 const bar = document.getElementById("progressBar")
-
-const pauseBtn = document.getElementById("pauseBtn")
-const stopBtn = document.getElementById("stopBtn")
-const controls = document.getElementById("controls")
 
 const startSound = document.getElementById("startSound")
 const midSound = document.getElementById("midSound")
 const endSound = document.getElementById("endSound")
 
 
-/* ---------- START ---------- */
-
-startBtn.onclick = () => {
-
-    startBtn.style.display="none"
-    controls.style.display="flex"
-
-    timer.style.color="#993399"
-
-    startSound.play()
-
-    interval = setInterval(runTimer,1000)
-}
-
-
-/* ---------- TIMER ---------- */
+/* TIMER */
 
 function runTimer(){
 
-    if(paused) return
+if(paused) return
 
-    time--
+time--
 
-    timer.textContent=time
+timer.textContent=time
 
-    timer.classList.add("pulse")
-    setTimeout(()=>timer.classList.remove("pulse"),200)
+timer.classList.add("pulse")
+setTimeout(()=>timer.classList.remove("pulse"),200)
 
-    let progress = ((total-time)/total)*100
-    bar.style.width = progress+"%"
+let progress=((total-time)/total)*100
+bar.style.width=progress+"%"
 
-    if(time===15) midSound.play()
+if(time===15) midSound.play()
 
-    if(time<=0){
+if(time<=0){
 
-        clearInterval(interval)
+clearInterval(interval)
+running=false
 
-        timer.textContent="0"
-        timer.style.color="#f44336"
+timer.textContent="0"
+timer.style.color="#f44336"
 
-        bar.style.width="100%"
+bar.style.width="100%"
 
-        endSound.play()
-    }
+endSound.play()
+
+}
+
 }
 
 
-/* ---------- PAUSE ---------- */
+/* START */
 
-pauseBtn.onclick=()=>{
+function startTimer(){
 
-    paused=!paused
+timer.style.color="#993399"
 
-    pauseBtn.textContent = paused ? "RESUME" : "PAUSE"
+startSound.play()
+
+interval=setInterval(runTimer,1000)
+
+running=true
+
 }
 
 
-/* ---------- STOP ---------- */
+/* STOP / RESET */
 
-stopBtn.onclick=()=>{
+function stopTimer(){
 
-    clearInterval(interval)
+clearInterval(interval)
 
-    time = total
-    paused = false
+time=total
+paused=false
+running=false
 
-    timer.textContent=total
-    timer.style.color="#993399"
+timer.textContent=total
+timer.style.color="#993399"
 
-    bar.style.width="0%"
+bar.style.width="0%"
 
-    pauseBtn.textContent="PAUSE"
-
-    controls.style.display="none"
-    startBtn.style.display="block"
 }
+
+
+/* CLAVIER */
+
+document.addEventListener("keydown",(e)=>{
+
+/* ENTREE */
+
+if(e.code==="Enter"){
+
+e.preventDefault()
+
+if(!running){
+
+startTimer()
+
+}else{
+
+stopTimer()
+
+}
+
+}
+
+/* ESPACE */
+
+if(e.code==="Space"){
+
+e.preventDefault()
+
+if(running){
+
+paused=!paused
+
+}
+
+}
+
+})
 
 </script>
 
 </body>
 </html>
-
